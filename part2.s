@@ -40,7 +40,15 @@ __start:	# execution starts here
 # Write your program below this line.
 ########################################
 
-	
+	lui $t0, 0x1000			# load the upper 16 bits of the 32 bit addr
+	ori $t0, $t0, 0xFF20	# load the lower 16 bits of the 32 bit addr
+
+	sw $s0, 0($t0)			# store the integer input by the user into the address
+
+	sll $s0, $s0, 4			# multiply the integer by 16
+	sw $s0, 4($t0)			# store the result in the next block of memory
+
+	addi $t0, $s0, -1		# subtract the result by 1 and store in $t0
 
 ########################################
 # Do not touch anything below this line.
@@ -48,7 +56,7 @@ __start:	# execution starts here
 
 	la $a0, msg2		# load address of msg2 into register
 	li $v0, 4
-	syscall				# make a syscall to print msg1 in console window
+	syscall				# make a syscall to print msg2 in console window
 			
     li	$v0, 1			# system call code for printing integer = 1
     move	$a0, $t0	# move integer to be printed into $a0:  $a0 = $t0
