@@ -30,7 +30,7 @@ result_msg:	.asciiz		"The result of summation:   "
 
 __start:	# execution starts here
 			
-	la $a0, input_msg   # load address of msg1 into register
+	la $a0, input_msg   # load address of input msg into register
 	li $v0, 4			# msg1 prompts for user to input integer
 	syscall				# make a syscall to print msg1 in console window
 
@@ -61,12 +61,17 @@ __start:	# execution starts here
 REC_FUNC:  
 
     slt $t0, $s2, $s0       # check if i is less than x
-    beq $t0, $zero, RESULT  # if its not jump to the result addr
+    beq $t0, $zero, RETURN  # if its not jump to the RETURN addr
     
     add $s1, $s1, $s2       # add i to y and store in y
     addi $s2, $s2, 1
 
-    beq $zero, $zero, LOOP  # jump to the beginning of the for loop
+    jal REC_FUNC
+
+
+RETURN:
+
+
 
 RESULT:
 	la $a0, result_msg		# load address of result_msg into register
